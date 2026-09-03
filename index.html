@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Internal Tool</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap">
+<style>
+:root{
+  --orange-50:#FEF6EC; --orange-100:#FDE3C2; --orange-500:#EF8B22; --orange-700:#D96B10; --orange-900:#CC5500;
+  --navy-50:#EEF1F4; --navy-100:#CDD5DA; --navy-400:#507080; --navy-500:#27343D; --navy-700:#1A2329;
+  --blue-50:#EBF4FB; --blue-500:#0979C3; --blue-700:#065E9A; --blue-900:#023B63;
+  --grey-50:#F4F5F5; --grey-100:#E2E3E4; --grey-200:#C0C2C4; --grey-500:#53575A; --grey-700:#363839;
+  --success:#69995D; --error:#CC0100;
+  --radius-sm:6px; --radius-md:12px; --radius-lg:20px;
+  --shadow-md:0 4px 12px rgba(39,52,61,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-size:18px;scroll-behavior:smooth}
+body{font-family:'Roboto',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--grey-500);background:#fff;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:860px;margin:0 auto;padding:0 20px}
+h1,h2,h3,h4{color:var(--navy-500);font-weight:700}
+a{color:var(--blue-500);text-decoration:none} a:hover{text-decoration:underline}
+
+/* header */
+.hero{background:var(--navy-500);color:#fff;padding:52px 0 44px}
+.hero .kicker{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--orange-500);font-weight:700;margin-bottom:10px}
+.hero h1{color:#fff;font-size:2.1rem;line-height:1.15;margin-bottom:14px}
+.hero p{color:var(--navy-100);max-width:640px;font-size:.95rem}
+.hero .meta{margin-top:18px;font-size:.72rem;color:var(--navy-400)}
+.hero .meta b{color:var(--navy-100)}
+
+/* section chrome */
+section{padding:44px 0}
+section:nth-of-type(even){background:var(--grey-50)}
+.sec-label{display:inline-block;background:var(--navy-500);color:#fff;font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border-radius:999px;margin-bottom:14px}
+h2{font-size:1.5rem;margin-bottom:16px}
+h3{font-size:1.05rem;margin:22px 0 8px}
+p{margin-bottom:12px;max-width:70ch}
+.lead{font-size:1.05rem;color:var(--grey-700)}
+
+/* cards */
+.card{background:#fff;border:1px solid var(--grey-100);border-radius:var(--radius-md);padding:20px 22px;margin:14px 0;box-shadow:var(--shadow-md)}
+.card h4{font-size:.95rem;margin-bottom:8px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:700px){.grid2{grid-template-columns:1fr}}
+
+/* voice cards */
+.voice{border-left:5px solid var(--grey-200)}
+.voice.side-a{border-left-color:var(--blue-500)}
+.voice.side-b{border-left-color:var(--orange-500)}
+.voice .who{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--navy-400);margin-bottom:6px}
+.voice p{font-size:.85rem;margin-bottom:8px}
+.voice p:last-child{margin-bottom:0}
+
+/* timeline */
+.timeline{list-style:none;margin:16px 0;position:relative;padding-left:26px}
+.timeline:before{content:'';position:absolute;left:8px;top:6px;bottom:6px;width:2px;background:var(--navy-100)}
+.timeline li{position:relative;padding:0 0 14px 8px;font-size:.85rem}
+.timeline li:before{content:'';position:absolute;left:-23px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--blue-500)}
+.timeline li.hot:before{background:var(--orange-500)}
+.timeline li b{color:var(--navy-500)}
+
+/* verdict chips */
+.chip{display:inline-block;font-size:.62rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:999px;vertical-align:middle}
+.chip.holds{background:#E7F0E4;color:#3E6B34}
+.chip.partial{background:var(--orange-100);color:var(--orange-900)}
+.chip.breaks{background:#F9E2E2;color:var(--error)}
+
+/* stat band */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:20px 0}
+@media(max-width:700px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--navy-500);border-radius:var(--radius-md);padding:16px 14px;text-align:center}
+.stat .n{font-size:1.7rem;font-weight:700;color:var(--orange-500);line-height:1.1}
+.stat .l{font-size:.66rem;color:var(--navy-100);margin-top:5px;line-height:1.35}
+
+/* bars */
+.bar-row{display:flex;align-items:center;gap:10px;margin:8px 0;font-size:.8rem}
+.bar-row .bl{width:200px;flex-shrink:0;text-align:right;color:var(--grey-700)}
+.bar-track{flex:1;background:var(--grey-100);border-radius:999px;height:22px;position:relative;overflow:hidden}
+.bar-fill{height:100%;border-radius:999px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;color:#fff;font-size:.68rem;font-weight:700;min-width:34px}
+@media(max-width:700px){.bar-row{flex-wrap:wrap}.bar-row .bl{width:100%;text-align:left}}
+
+/* table */
+.tblwrap{overflow-x:auto;margin:16px 0}
+table{border-collapse:collapse;width:100%;font-size:.8rem;background:#fff;border-radius:var(--radius-sm);overflow:hidden}
+th{background:var(--navy-500);color:#fff;text-align:left;padding:9px 12px;font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
+td{padding:8px 12px;border-bottom:1px solid var(--grey-100);white-space:nowrap;color:var(--grey-700)}
+tr.hl td{background:var(--orange-50)}
+td.good{color:var(--success);font-weight:700} td.bad{color:var(--error);font-weight:700}
+
+/* callouts */
+.callout{background:var(--blue-50);border-radius:var(--radius-md);padding:18px 22px;margin:16px 0}
+.callout.warm{background:var(--orange-50)}
+.callout h4{margin-bottom:6px;font-size:.9rem}
+.callout p{font-size:.85rem;margin-bottom:8px}
+.callout p:last-child{margin-bottom:0}
+blockquote{border-left:4px solid var(--orange-500);padding:4px 0 4px 16px;margin:14px 0;font-size:.9rem;color:var(--grey-700);font-style:italic}
+blockquote .attr{display:block;font-style:normal;font-size:.7rem;color:var(--navy-400);margin-top:6px}
+
+/* proposal */
+.prop{background:#fff;border:1px solid var(--grey-100);border-radius:var(--radius-md);margin:14px 0;overflow:hidden;box-shadow:var(--shadow-md)}
+.prop .head{display:flex;align-items:baseline;gap:12px;padding:14px 20px;background:var(--navy-50)}
+.prop .num{font-size:1.1rem;font-weight:700;color:var(--orange-900);flex-shrink:0}
+.prop .head h4{font-size:.95rem;margin:0}
+.prop .body{padding:14px 20px}
+.prop .body p{font-size:.85rem}
+.prop .against{border-top:1px dashed var(--grey-200);margin-top:10px;padding-top:10px}
+.prop .against .tag{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--error)}
+.prop .against p{color:var(--grey-500)}
+
+/* ballots */
+.reviewer-bar{position:sticky;top:0;z-index:50;background:var(--navy-500);color:#fff;padding:10px 0;box-shadow:var(--shadow-md)}
+.reviewer-bar .wrap{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.reviewer-bar .lbl{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--navy-100)}
+.rev-chip{font-size:.72rem;font-weight:700;padding:5px 14px;border-radius:999px;border:1.5px solid var(--navy-400);background:transparent;color:#fff;cursor:pointer;font-family:inherit}
+.rev-chip.on{background:var(--orange-500);border-color:var(--orange-500);color:var(--navy-700)}
+.ballot{border-top:1px dashed var(--grey-200);margin-top:12px;padding-top:12px}
+.ballot .btns{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.vote-btn{font-size:.74rem;font-weight:700;padding:6px 16px;border-radius:999px;border:1.5px solid var(--grey-200);background:#fff;color:var(--grey-700);cursor:pointer;font-family:inherit;transition:all .12s}
+.vote-btn:hover{border-color:var(--blue-500)}
+.vote-btn.agree.on{background:#E7F0E4;border-color:var(--success);color:#3E6B34}
+.vote-btn.disagree.on{background:#F9E2E2;border-color:var(--error);color:var(--error)}
+.vote-btn.discuss.on{background:var(--orange-100);border-color:var(--orange-700);color:var(--orange-900)}
+.ballot textarea{width:100%;margin-top:10px;border:1px solid var(--grey-200);border-radius:var(--radius-sm);padding:8px 10px;font-family:inherit;font-size:.8rem;color:var(--grey-700);min-height:44px;resize:vertical}
+.ballot textarea:focus{outline:2px solid var(--blue-500);border-color:var(--blue-500)}
+.ballot .saved{font-size:.62rem;color:var(--navy-400);margin-left:auto}
+/* v2 — voting closed: the live ballot + reviewer picker are retired, reactions render as text below each item */
+
+/* v2 — verdicts + reactions */
+.verdict{margin-left:auto;flex-shrink:0;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:4px 10px;border-radius:999px;white-space:nowrap}
+.verdict.ratified{background:var(--success);color:#fff}
+.verdict.cut{background:var(--error);color:#fff}
+.verdict.reshaped{background:var(--orange-500);color:#fff}
+.prop.is-cut .head{background:#FBEDED}
+.prop.is-cut .head h4{color:var(--grey-500);text-decoration:line-through;text-decoration-thickness:1px}
+.prop.is-ratified .head{background:#EEF4EC}
+.prop.is-reshaped .head{background:var(--orange-50)}
+.reactions{border-top:2px solid var(--navy-50);margin-top:14px;padding-top:12px}
+.reactions .rlabel{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--navy-400);margin-bottom:8px}
+.react{display:flex;gap:10px;font-size:.82rem;margin-bottom:9px;align-items:flex-start}
+.react:last-child{margin-bottom:0}
+.react .who{flex-shrink:0;width:64px;font-weight:700;color:var(--navy-500)}
+.react .vote{flex-shrink:0;width:74px;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:2px 0}
+.react .vote.a{color:var(--success)} .react .vote.d{color:var(--error)} .react .vote.q{color:var(--orange-700)}
+.react .said{color:var(--grey-500);font-style:italic}
+.tally{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 4px}
+.tally .t{background:#fff;border:1px solid var(--grey-100);border-radius:var(--radius-sm);padding:8px 12px;font-size:.75rem;box-shadow:var(--shadow-md)}
+.tally .t b{display:block;color:var(--navy-500);font-size:.85rem}
+.ruling{background:#fff;border:1px solid var(--grey-100);border-left:5px solid var(--success);border-radius:var(--radius-md);padding:16px 20px;margin:12px 0;box-shadow:var(--shadow-md)}
+.ruling.dropped{border-left-color:var(--error)}
+.ruling .rnum{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--navy-400);margin-bottom:4px}
+.ruling h4{font-size:.95rem;margin-bottom:6px}
+.ruling p{font-size:.84rem;margin-bottom:6px}
+.ruling p:last-child{margin-bottom:0}
+.closed-note{background:var(--navy-50);border-radius:var(--radius-md);padding:14px 20px;margin:20px 0;font-size:.82rem;color:var(--grey-700)}
+.export-bar{background:var(--blue-50);border-radius:var(--radius-md);padding:18px 22px;margin:24px 0}
+.export-bar h4{font-size:.9rem;margin-bottom:6px}
+.export-bar p{font-size:.8rem}
+.export-btn{font-size:.8rem;font-weight:700;padding:10px 22px;border-radius:999px;border:none;background:var(--blue-500);color:#fff;cursor:pointer;font-family:inherit;margin-top:8px}
+.export-btn:hover{background:var(--blue-700)}
+.export-out{display:none;width:100%;margin-top:12px;border:1px solid var(--grey-200);border-radius:var(--radius-sm);padding:10px;font-family:monospace;font-size:.66rem;min-height:120px}
+.foot{background:var(--navy-700);color:var(--navy-100);padding:30px 0;font-size:.72rem}
+.foot .wrap p{margin-bottom:6px;max-width:none}
+.smallnote{font-size:.7rem;color:var(--navy-400)}
+
+/* toc */
+.toc{background:var(--navy-50);border-radius:var(--radius-md);padding:16px 22px;margin:24px auto 0;max-width:860px;font-size:.8rem}
+.toc b{color:var(--navy-500);font-size:.72rem;text-transform:uppercase;letter-spacing:.08em}
+.toc a{margin-right:16px;white-space:nowrap;display:inline-block;margin-top:4px}
+
+/* ---- payment brief additions ---- */
+.fadd{border-top:1px dashed var(--grey-200);margin-top:12px;padding-top:10px}
+.fadd .fh{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--navy-400);margin-bottom:7px}
+.fadd .fe{font-size:.79rem;line-height:1.5;margin-bottom:9px}
+.fadd .fe:last-child{margin-bottom:0}
+.fadd .fe b{color:var(--navy-500)}
+.respond{background:var(--navy-500);border-radius:var(--radius-md);padding:20px 24px;margin:24px 0}
+.respond h4{color:#fff;font-size:.95rem;margin-bottom:6px}
+.respond p{color:var(--navy-100);font-size:.82rem;max-width:none;margin-bottom:14px}
+.respond .who-in{display:flex;flex-wrap:wrap;gap:8px}
+.rp{font-size:.72rem;font-weight:700;padding:5px 13px;border-radius:999px;border:1.5px solid var(--navy-400);color:var(--navy-100)}
+.rp.in{background:var(--success);border-color:var(--success);color:#fff}
+.livenote{font-size:.72rem;color:var(--navy-400);margin-top:12px}
+.dbwarn{background:#F9E2E2;border:1px solid var(--error);border-radius:var(--radius-md);padding:14px 18px;margin:16px 0;font-size:.8rem;color:var(--error);display:none}
+.dbwarn.on{display:block}
+.floor{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0}
+@media(max-width:760px){.floor{grid-template-columns:1fr}}
+.fitem{background:#fff;border:1px solid var(--grey-100);border-radius:var(--radius-md);padding:16px 18px;box-shadow:var(--shadow-md);display:flex;flex-direction:column}
+.fitem.wide{grid-column:1/-1}
+.fitem h4{font-size:.9rem;margin-bottom:5px}
+.fitem .pr{font-size:.78rem;line-height:1.5;margin-bottom:10px;color:var(--grey-500)}
+.fitem .seed{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--orange-900);margin-bottom:8px}
+.fitem textarea{width:100%;border:1px solid var(--grey-200);border-radius:var(--radius-sm);padding:9px 11px;font-family:inherit;font-size:.8rem;color:var(--grey-700);min-height:70px;resize:vertical;background:#fff}
+.fitem textarea:focus{outline:2px solid var(--blue-500);border-color:var(--blue-500)}
+.fitem textarea:disabled{background:var(--grey-50)}
+.fitem .st{font-size:.62rem;color:var(--navy-400);margin-top:5px;min-height:12px}
+.thesis{border:1px solid var(--grey-200);border-radius:var(--radius-md);overflow:hidden;margin:0 0 24px;box-shadow:var(--shadow-md)}
+.thesis .th{background:var(--navy-500);color:#fff;padding:11px 20px;font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.11em}
+.thesis .tb{background:#fff;display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--grey-100)}
+@media(max-width:760px){.thesis .tb{grid-template-columns:1fr}}
+.thesis .ti{background:#fff;padding:18px 20px}
+.thesis .ti .tn{font-size:.62rem;font-weight:700;letter-spacing:.1em;color:var(--orange-900);margin-bottom:6px}
+.thesis .ti h4{font-size:.9rem;margin-bottom:6px;line-height:1.3}
+.thesis .ti p{font-size:.78rem;line-height:1.5;margin:0;max-width:none}
+.thesis .tl{background:var(--blue-50);border-top:1px solid var(--grey-100);padding:14px 20px}
+.thesis .tl p{margin:0;font-size:.8rem;line-height:1.55;max-width:none}
+.thesis .tl .lab{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--blue-700);margin-bottom:4px}
+.thesis .tg{background:var(--orange-50);border-top:1px solid var(--orange-100);padding:14px 20px}
+.thesis .tg p{margin:0;font-size:.88rem;font-weight:700;color:var(--navy-500);max-width:none}
+.thesis .tg .lab{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--orange-900);margin-bottom:4px}
+.sheets{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+@media(max-width:820px){.sheets{grid-template-columns:1fr}}
+.sheet{background:#fff;border:1px solid var(--grey-200);border-radius:var(--radius-md);overflow:hidden;box-shadow:var(--shadow-md)}
+.sheet .sh{background:var(--navy-500);color:#fff;padding:12px 18px}
+.sheet .sh .t{font-size:.9rem;font-weight:700;letter-spacing:.02em}
+.sheet .sh .w{font-size:.62rem;color:var(--navy-100);text-transform:uppercase;letter-spacing:.09em;margin-top:3px}
+.sheet .sb{padding:16px 18px}
+.sheet h5{font-size:.63rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--orange-900);margin:14px 0 6px}
+.sheet h5:first-child{margin-top:0}
+.sheet ul,.sheet ol{margin:0 0 0 18px;padding:0}
+.sheet li{font-size:.79rem;line-height:1.5;margin-bottom:5px}
+.sheet p{font-size:.79rem;margin-bottom:8px}
+.sheet .rule{background:var(--orange-50);border-left:4px solid var(--orange-500);border-radius:var(--radius-sm);padding:10px 14px;margin:10px 0;font-size:.79rem;font-weight:700;color:var(--navy-500)}
+.sheet .checks{list-style:none;margin-left:0}
+.sheet .checks li{font-family:ui-monospace,monospace;font-size:.75rem}
+.sheet table{font-size:.75rem;margin-top:6px}
+.sheet th{padding:6px 10px;font-size:.6rem}
+.sheet td{padding:6px 10px;white-space:normal}
+.sheet .pend{font-size:.72rem;color:var(--error);font-style:italic;border-top:1px dashed var(--grey-200);margin-top:10px;padding-top:8px}
+.sheet .note{font-size:.72rem;color:var(--navy-400);font-style:italic;margin-top:10px}
+.rtag{display:inline-block;font-size:.55rem;font-weight:700;letter-spacing:.07em;padding:1px 5px;border-radius:4px;background:var(--grey-100);color:var(--grey-500);vertical-align:middle;margin-left:5px}
+.rtag.ctxh{background:var(--orange-100);color:var(--orange-900)}
+td.bname{font-weight:700;color:var(--navy-500);white-space:nowrap}
+td.b-crit{background:#F9E2E2;color:var(--error);font-weight:700}
+td.b-ser{background:#FBEADB;color:var(--orange-900);font-weight:700}
+td.b-watch{background:#FBF4E0;color:#8A6410;font-weight:700}
+td.b-ok{background:#EDF3EB;color:#3E6B34;font-weight:700}
+.f-crit{background:var(--error)} .f-ser{background:var(--orange-700)}
+.f-watch{background:#C9901A} .f-ok{background:var(--success)}
+.legendrow{display:flex;gap:14px;flex-wrap:wrap;font-size:.68rem;color:var(--grey-500);margin:10px 0 2px}
+.legendrow span{display:flex;align-items:center;gap:5px}
+.legendrow i{width:11px;height:11px;border-radius:3px;display:inline-block}
+.finding{background:#fff;border:1px solid var(--grey-100);border-left:5px solid var(--blue-500);border-radius:var(--radius-md);padding:16px 20px;margin:14px 0;box-shadow:var(--shadow-md)}
+.finding .fnum{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--navy-400);margin-bottom:4px}
+.finding h3{font-size:1rem;margin:0 0 7px}
+.finding p{font-size:.84rem;margin-bottom:7px}
+.finding p:last-child{margin-bottom:0}
+.finding.mine{border-left-color:var(--orange-500)}
+.gapcard{background:#fff;border:1px solid var(--grey-100);border-radius:var(--radius-md);padding:0;margin:14px 0;box-shadow:var(--shadow-md);overflow:hidden}
+.gapcard .gh{display:flex;align-items:baseline;gap:12px;padding:13px 20px;background:var(--navy-50)}
+.gapcard .gn{font-size:1.1rem;font-weight:700;color:var(--orange-900)}
+.gapcard .gh h4{margin:0;font-size:.95rem}
+.gapcard .gb{padding:13px 20px}
+.gapcard .gb p{font-size:.84rem;margin-bottom:8px}
+.gapcard .gmeta{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.owners{width:100%}
+.await{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--navy-400);background:var(--navy-50);padding:4px 10px;border-radius:999px}
+.who-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin:16px 0}
+.who{background:#fff;border:1px solid var(--grey-100);border-radius:var(--radius-md);padding:15px 18px;box-shadow:var(--shadow-md)}
+.who .nm{font-size:.95rem;font-weight:700;color:var(--navy-500);margin-bottom:3px}
+.who .pc{font-size:.78rem;margin-bottom:8px}
+.blocking{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding:3px 9px;border-radius:999px}
+.blocking.yes{background:#F9E2E2;color:var(--error)}
+.blocking.soft{background:var(--navy-50);color:var(--navy-400)}
+.blocking.go{background:#E7F0E4;color:#3E6B34}
+.correction{background:var(--blue-50);border-left:5px solid var(--blue-500);border-radius:var(--radius-md);padding:15px 20px;margin:16px 0;font-size:.82rem}
+.correction b{color:var(--navy-500)}
+</style>
+</head>
+<body>
+
+<div class="reviewer-bar">
+  <div class="wrap">
+    <span class="lbl">I am</span>
+    <button class="rev-chip" data-r="Cameron">Cameron</button>
+    <button class="rev-chip" data-r="Paul">Paul</button>
+    <button class="rev-chip" data-r="Mike">Mike</button>
+    <button class="rev-chip" data-r="Amanda">Amanda</button>
+    <button class="rev-chip" data-r="Anne">Anne</button>
+    <button class="rev-chip" data-r="Matisen">Matisen</button>
+    <button class="rev-chip" data-r="Brian">Brian</button>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="wrap">
+    <div class="kicker">Payment capture policy brief &middot; Internal only</div>
+    <h1>The Close-Out Question</h1>
+    <p>We tell every crew to collect full payment before they leave the job. When the customer cooperates and the reader works, that happens. When either one fails, we have nothing built &mdash; no script, no citable contract language, and no record of what our best branches already figured out.</p>
+    <div class="meta">Opened <b>September 2, 2026</b> by <b>Brian Herzig</b> &middot; For <b>Cameron, Paul, Mike, Amanda, Anne, Matisen</b> &middot; Ballot <b>open &mdash; live</b></div>
+  </div>
+</div>
+
+<div class="toc">
+  <b>On this page</b><br>
+  <a href="#s1">1 &middot; The case</a>
+  <a href="#s2">2 &middot; The data</a>
+  <a href="#s3">3 &middot; The gaps</a>
+  <a href="#s4">4 &middot; The cards</a>
+  <a href="#s5">5 &middot; The ballot</a>
+  <a href="#s6">6 &middot; The open floor</a>
+  <a href="#s7">7 &middot; The sequence</a>
+  <a href="#s8">8 &middot; Who owns what</a>
+</div>
+
+<section id="s1">
+  <div class="wrap">
+    <div class="sec-label">1 &middot; The case</div>
+    <h2>What's actually happening</h2>
+    <div class="thesis">
+      <div class="th">What we're solving</div>
+      <div class="tb">
+        <div class="ti">
+          <div class="tn">01</div>
+          <h4>Fix our credit card swipe % onsite</h4>
+          <p>More card-present capture at the job, fewer keyed transactions. Company is at 27.2% keyed against a goal of under 10%.</p>
+        </div>
+        <div class="ti">
+          <div class="tn">02</div>
+          <h4>Reduce our instances of invoice-later</h4>
+          <p>Every invoice-later becomes one of two things: a <b>missing payment we have to track down</b>, or a <b>virtual terminal that costs us more</b>. Invoicing is the failure state, not the fallback.</p>
+        </div>
+        <div class="ti">
+          <div class="tn">03</div>
+          <h4>Build a best practice for jobs that run long or have damages</h4>
+          <p>The two situations where full payment most often doesn't happen &mdash; and where we currently have nothing written.</p>
+        </div>
+      </div>
+      <div class="tl">
+        <div class="lab">Why 01 and 02 are the same problem</div>
+        <p>An invoice-later doesn't just delay the money &mdash; it changes how the money arrives. When we recover it, we recover it by <b>virtual terminal</b>, which is card-not-present and costs us the higher rate. <b>So every deferred payment lands right back in the keyed number.</b> Cutting invoice-later is not a separate goal from fixing the swipe %; it is one of the levers that moves it.</p>
+      </div>
+      <div class="tg">
+        <div class="lab">The goal</div>
+        <p>Improve our card swipes and reduce missing payments all around.</p>
+      </div>
+    </div>
+    <p class="lead">This isn't a compliance problem with the crews. It's a set of gaps on our side that we've never closed.</p>
+    <p>A manager facing a customer who disputes the total is improvising &mdash; no script, no coaching, and no contract language they can cite to back them up.</p>
+    <p>A crew facing a dead or broken reader goes to key in the card, or invoices it out later and has a manager send a virtual terminal. <b>The team doesn't know a virtual terminal hits us as a keyed transaction</b>, so they think it's fine. We still need them to know that collecting onsite is what matters most, even when they have to key it &mdash; and at the same time we have to drive those instances down wherever we can.</p>
+
+    <h3>What triggered this</h3>
+    <ul class="timeline">
+      <li class="hot"><b>Jul 20</b> &mdash; Paul launches the Manual Card Entry &mdash; Branch Tracker. Company at 37%. Goal set at under 10%.</li>
+      <li><b>Jul 28</b> &mdash; Two Critical branches halve their rate in a week. Paul's read: shining a light on it works.</li>
+      <li><b>Aug 17</b> &mdash; Company down to 34.4%. North Austin still at 95.5%.</li>
+      <li class="hot"><b>Mid-Aug</b> &mdash; North Austin's root cause identified: they had been running with <b>broken or missing card readers</b>, plus no process for keeping equipment current and working. Equipment and process corrected.</li>
+      <li class="hot"><b>Aug 31</b> &mdash; Company at 27.2%. North Austin snaps back into Critical after one week out &mdash; now a habit problem, not an equipment one.</li>
+      <li class="hot"><b>Sep 1</b> &mdash; Paul rules on capture methods: swipe, chip and tap are card-present. Virtual terminal counts as keyed, <i>even when the customer types it in themselves</i>. The field had assumed otherwise.</li>
+      <li><b>Sep 2</b> &mdash; This brief. Messaging built; four questions still unanswered.</li>
+    </ul>
+
+    <div class="callout warm">
+      <h4>Where we got this wrong first</h4>
+      <p>The only prior company-wide guidance was one line in the July 2025 FISERV launch: <i>"Still avoid manually keying in the credit card, it costs us MORE! Swipe or Chip!"</i> It never explained why, never mentioned tap-to-pay, and never addressed virtual terminal. A crew reading that could reasonably conclude a terminal the <i>customer</i> fills in isn't them keying anything.</p>
+      <p><b>Treat it as our documentation gap, not crew defiance.</b> Every draft in the working doc leads with that.</p>
+    </div>
+
+    <div class="correction">
+      <b>Correction on the record.</b> An earlier version of this brief claimed we had no measurement for this. That was wrong &mdash; Paul's tracker has run weekly since July 20, and the under-10% goal is already company policy. This brief is rebuilt on that data, and the data makes the case better than the original argument did.
+    </div>
+  </div>
+</section>
+
+<section id="s2">
+  <div class="wrap">
+    <div class="sec-label">2 &middot; The data</div>
+    <h2>What seven weeks of tracking says</h2>
+
+    <div class="stats">
+      <div class="stat"><div class="n">27.2%</div><div class="l">Company keyed share, week of Aug 24&ndash;30</div></div>
+      <div class="stat"><div class="n">2.7&times;</div><div class="l">Above the under-10% goal, after seven weeks</div></div>
+      <div class="stat"><div class="n">69.8%</div><div class="l">Of all keyed dollars sit in CTXH</div></div>
+      <div class="stat"><div class="n">1 of 10</div><div class="l">Branches that held On target all seven weeks</div></div>
+    </div>
+
+    <h3>Latest week, all ten branches</h3>
+    <div class="legendrow">
+      <span><i class="f-ok"></i> On target &le;15%</span>
+      <span><i class="f-watch"></i> Watch 15&ndash;30%</span>
+      <span><i class="f-ser"></i> Serious 30&ndash;50%</span>
+      <span><i class="f-crit"></i> Critical &gt;50%</span>
+    </div>
+<div class="bar-row"><div class="bl">Leander <span class="rtag ctxh">CTXH</span></div><div class="bar-track"><div class="bar-fill f-ok" style="width:2.2%">0.0%</div></div></div>
+<div class="bar-row"><div class="bl">Garland <span class="rtag">DFWT</span></div><div class="bar-track"><div class="bar-fill f-ok" style="width:3.0%">3.0%</div></div></div>
+<div class="bar-row"><div class="bl">Fort Worth <span class="rtag">DFWT</span></div><div class="bar-track"><div class="bar-fill f-ok" style="width:3.3%">3.3%</div></div></div>
+<div class="bar-row"><div class="bl">McKinney <span class="rtag">DFWT</span></div><div class="bar-track"><div class="bar-fill f-ok" style="width:10.8%">10.8%</div></div></div>
+<div class="bar-row"><div class="bl">Tampa <span class="rtag">DFWT</span></div><div class="bar-track"><div class="bar-fill f-ok" style="width:10.9%">10.9%</div></div></div>
+<div class="bar-row"><div class="bl">South Austin <span class="rtag ctxh">CTXH</span></div><div class="bar-track"><div class="bar-fill f-ok" style="width:12.3%">12.3%</div></div></div>
+<div class="bar-row"><div class="bl">Houston <span class="rtag ctxh">CTXH</span></div><div class="bar-track"><div class="bar-fill f-watch" style="width:18.0%">18.0%</div></div></div>
+<div class="bar-row"><div class="bl">San Antonio <span class="rtag ctxh">CTXH</span></div><div class="bar-track"><div class="bar-fill f-ser" style="width:36.9%">36.9%</div></div></div>
+<div class="bar-row"><div class="bl">Dallas <span class="rtag">DFWT</span></div><div class="bar-track"><div class="bar-fill f-ser" style="width:39.0%">39.0%</div></div></div>
+<div class="bar-row"><div class="bl">North Austin <span class="rtag ctxh">CTXH</span></div><div class="bar-track"><div class="bar-fill f-crit" style="width:51.9%">51.9%</div></div></div>
+
+    <div class="finding">
+      <div class="fnum">Finding 1</div>
+      <h3>Visibility alone moved 10 points, then stalled</h3>
+      <p>Company keyed share went from roughly 37% to 27.2% over seven weeks of weekly, named, branch-by-branch reporting to every manager in the company. Real progress &mdash; and still 2.7&times; the goal. July closed at 36.58% ($1,285,869 of $3,515,330).</p>
+    </div>
+
+    <div class="finding">
+      <div class="fnum">Finding 2</div>
+      <h3>Every branch that reached On target bounced back out. One didn't.</h3>
+      <p>Garland went 50.4 &rarr; 23.5 &rarr; 77.3. McKinney 51.5 &rarr; 22.1 &rarr; 53.9. Fort Worth 4.3 &rarr; 36.1 &rarr; 3.3. Houston was best in the company in July at 0.0% and has been on Watch ever since.</p>
+      <p><b>Leander is the only branch On target in all seven weeks:</b> 3.9 &middot; 2.2 &middot; 3.9 &middot; 0.0 &middot; 0.0 &middot; 1.1 &middot; 0.0.</p>
+      <blockquote>Shining a light on it and reminding the team of the best practices have a quick and meaningful turnaround.<span class="attr">Paul Morin, July 28</span></blockquote>
+      <p>He was right about the turnaround. <b>The data now shows the turnarounds don't hold.</b> Attention produces a one-week dip; nothing behind the tracker tells a manager why their branch keys or what to do differently, so it reverts. <b>That is the case for this brief.</b></p>
+    </div>
+
+<div class="tblwrap"><table><thead><tr><th>Branch</th><th>Jul 13–19</th><th>Jul 20–26</th><th>Jul 27–Aug 2</th><th>Aug 3–9</th><th>Aug 10–16</th><th>Aug 17–23</th><th>Aug 24–30</th></tr></thead><tbody><tr><td class="bname">North Austin <span class="rtag ctxh">CTXH</span></td><td class="b-crit">87.6</td><td class="b-crit">76.2</td><td class="b-crit">86.4</td><td class="b-crit">99.6</td><td class="b-crit">95.5</td><td class="b-ser">47.7</td><td class="b-crit">51.9</td></tr>
+<tr><td class="bname">Dallas <span class="rtag">DFWT</span></td><td class="b-ser">47.7</td><td class="b-ser">50.0</td><td class="b-ser">41.7</td><td class="b-ser">34.8</td><td class="b-ser">32.2</td><td class="b-ser">45.4</td><td class="b-ser">39.0</td></tr>
+<tr><td class="bname">San Antonio <span class="rtag ctxh">CTXH</span></td><td class="b-ser">36.8</td><td class="b-ser">38.4</td><td class="b-watch">23.8</td><td class="b-watch">22.7</td><td class="b-watch">21.2</td><td class="b-watch">18.1</td><td class="b-ser">36.9</td></tr>
+<tr><td class="bname">Houston <span class="rtag ctxh">CTXH</span></td><td class="b-ok">1.6</td><td class="b-ok">0.0</td><td class="b-ok">14.9</td><td class="b-ser">30.8</td><td class="b-watch">22.2</td><td class="b-ser">30.0</td><td class="b-watch">18.0</td></tr>
+<tr><td class="bname">McKinney <span class="rtag">DFWT</span></td><td class="b-crit">51.5</td><td class="b-watch">22.1</td><td class="b-crit">53.9</td><td class="b-crit">59.2</td><td class="b-ser">31.0</td><td class="b-ser">42.9</td><td class="b-ok">10.8</td></tr>
+<tr><td class="bname">Garland <span class="rtag">DFWT</span></td><td class="b-crit">50.4</td><td class="b-watch">23.5</td><td class="b-crit">77.3</td><td class="b-crit">58.6</td><td class="b-ok">7.4</td><td class="b-watch">28.6</td><td class="b-ok">3.0</td></tr>
+<tr><td class="bname">Tampa <span class="rtag">DFWT</span></td><td class="b-ok">13.3</td><td class="b-ok">5.0</td><td class="b-ok">7.9</td><td class="b-watch">17.3</td><td class="b-ok">12.1</td><td class="b-watch">23.1</td><td class="b-ok">10.9</td></tr>
+<tr><td class="bname">South Austin <span class="rtag ctxh">CTXH</span></td><td class="b-ok">9.2</td><td class="b-ok">7.2</td><td class="b-watch">18.7</td><td class="b-watch">21.6</td><td class="b-ok">10.7</td><td class="b-ok">7.4</td><td class="b-ok">12.3</td></tr>
+<tr><td class="bname">Fort Worth <span class="rtag">DFWT</span></td><td class="b-ok">0.0</td><td class="b-ok">7.0</td><td class="b-ok">6.6</td><td class="b-ok">0.0</td><td class="b-ok">4.3</td><td class="b-ser">36.1</td><td class="b-ok">3.3</td></tr>
+<tr><td class="bname">Leander <span class="rtag ctxh">CTXH</span></td><td class="b-ok">3.9</td><td class="b-ok">2.2</td><td class="b-ok">3.9</td><td class="b-ok">0.0</td><td class="b-ok">0.0</td><td class="b-ok">1.1</td><td class="b-ok">0.0</td></tr></tbody></table></div>
+
+    <div class="finding mine">
+      <div class="fnum">Finding 3</div>
+      <h3>Two branches are two-thirds of the problem &mdash; and most of it is mine</h3>
+      <p><b>CTXH holds 69.8% of every manually-keyed dollar in the company</b> &mdash; $168,510 of $241,516 &mdash; on about 61% of the revenue. Derived regional rates: CTXH ~31.0% against DFWT ~21.3%.</p>
+      <p><b>North Austin alone is 40.7% of the company's keyed dollars</b> ($98,237). Add Dallas ($60,227) and two branches out of ten account for <b>65.6% of the entire exposure.</b> This is not a ten-branch behavior problem. It is concentrated.</p>
+      <p>North Austin has been Critical in six of seven weeks. At 99.6% the week of August 3&ndash;9, effectively everything was keyed.</p>
+      <p><b>And there was a reason nobody could have fixed by trying harder: they were operating with broken or missing card readers.</b> There was no process for keeping the equipment current and working. Both have since been corrected &mdash; which is what the 48-point drop the week of August 17 actually was.</p>
+      <p><b>What's left at North Austin is a different problem entirely.</b> The crews learned, correctly, that the readers didn't work. Now they have working equipment and the habit hasn't caught up &mdash; movers still reach past the reader because they expect it to fail. That's a trust-and-habit fix, not an equipment fix and not a script.</p>
+    </div>
+
+    <div class="callout warm">
+      <h4>What the number couldn't tell us</h4>
+      <p>For five straight weeks the tracker named North Austin as the company's worst offender at 87&ndash;99%. The actual cause was that they didn't have working hardware. <b>No amount of coaching, reminding, or shining a light on the number would have moved it</b> &mdash; and the tracker gave no way to know that.</p>
+      <p>A keyed transaction has at least four distinct causes: <b>no working reader &middot; crew habit or distrust of the equipment &middot; customer not on site &middot; customer refusing to pay.</b> Each needs a completely different fix. The number treats all four identically, which is exactly why seven weeks of visibility produced dips instead of durable change.</p>
+    </div>
+
+    <div class="finding">
+      <div class="fnum">Finding 4</div>
+      <h3>The metric is dollars, not transactions &mdash; and that changes the instruction</h3>
+      <p>The canvas reads "27.2% of transactions were manually keyed ($241,516 of $886,975)." That percentage is a dollar share. Two consequences:</p>
+      <p><b>One keyed $10,000 move hurts a branch more than twenty keyed $400 jobs.</b> That's a genuinely useful coaching instruction nobody has stated, and it's now in the crew card: if you're heading to a large move, confirm the reader before you roll.</p>
+      <p><b>Weekly dollar-weighting is too noisy to grade on.</b> No branch changes crew behavior by 54 points in a week. Those swings are one or two large jobs entering and leaving a small denominator. A manager can move from Critical to On target having changed nothing.</p>
+    </div>
+
+    <div class="finding mine">
+      <div class="fnum">Finding 5</div>
+      <h3>The answer is already in-house, and undocumented</h3>
+      <p>Leander has held 0&ndash;4% for seven straight weeks &mdash; best in the company, and sustained. Nobody has written down how.</p>
+      <p>Houston ran 0.0% in late July. Amanda asked in-channel what the secret was; the thread never produced an answer. <b>Two of my five branches have already solved this and we never wrote it down.</b></p>
+      <p><b>Correction to an earlier version of this brief:</b> I had the 48-point North Austin drop listed here as an undocumented method worth harvesting. It wasn't a method &mdash; it was the equipment and process fix landing. That answer is now known, and the lesson from it is different: <b>check the hardware before you coach the behavior.</b></p>
+    </div>
+  </div>
+</section>
+
+<section id="s3">
+  <div class="wrap">
+    <div class="sec-label">3 &middot; The gaps</div>
+    <h2>Where the money is actually going</h2>
+    <p class="lead">Ranked by dollars at risk. The most urgent and the hardest are not the same item, and the easiest one is what makes the other two provable.</p>
+
+    <div class="gapcard">
+      <div class="gh"><span class="gn">1</span><h4>No script or coaching for the price-dispute refusal</h4></div>
+      <div class="gb">
+        <p>This is where full payments are actually lost. Zero material exists today. Every manager handles it differently, and some of them lose the money.</p>
+        <div class="gmeta"><span class="chip breaks">Most urgent</span><span class="chip partial">Ballot item 4 &mdash; unassigned</span></div>
+      </div>
+    </div>
+
+    <div class="gapcard">
+      <div class="gh"><span class="gn">2</span><h4>No contract language a manager can cite</h4></div>
+      <div class="gb">
+        <p>Gap 1 can't be solved without this. We currently tell managers to say we're within the signed contract maximum and services were rendered. That's probably right &mdash; and it is entirely unsourced.</p>
+        <div class="gmeta"><span class="chip breaks">Hardest</span><span class="chip partial">Gates the script</span><span class="chip partial">Ballot item 3 &mdash; open question</span></div>
+      </div>
+    </div>
+
+    <div class="gapcard">
+      <div class="gh"><span class="gn">3</span><h4>Nothing behind the number</h4></div>
+      <div class="gb">
+        <p>Seven weeks of visibility, still 2.7&times; the goal, every win reverting. The tracker measures and names; nothing diagnoses. North Austin sat at the bottom of the list for five weeks while the real cause was missing hardware &mdash; the number could not say so. Meanwhile two branches solved it and their method was never captured.</p>
+        <div class="gmeta"><span class="chip holds">Highest leverage</span><span class="chip holds">Answer already in-house</span><span class="chip partial">Ballot items 2 and 7</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="s4">
+  <div class="wrap">
+    <div class="sec-label">4 &middot; The cards</div>
+    <h2>What ballot item 1 is actually asking you to approve</h2>
+    <p class="lead">Two cards, written to be printed and pinned &mdash; a truck sheet for movers and leads, and an expectations sheet for managers. Short on purpose. Neither makes a cost claim or cites contract language, which is why nothing still open blocks them.</p>
+
+    <div class="sheets">
+      <div class="sheet">
+        <div class="sh"><div class="t">&#128179; Getting paid &mdash; when and how</div><div class="w">Movers and leads &middot; print it, pin it</div></div>
+        <div class="sb">
+          <h5>When</h5>
+          <ul>
+            <li><b>At the end of the job, before you leave the site.</b> The job isn't done when the truck is empty. It's done when it's paid.</li>
+            <li><b>Multi-day move:</b> collect each day. If you can't, full payment on the last day.</li>
+            <li><b>Never leave a job unpaid without telling your manager that same day.</b></li>
+          </ul>
+          <h5>How &mdash; in this order</h5>
+          <ol>
+            <li><b>Reader first.</b> Tap &middot; chip &middot; swipe. All three are equally good.</li>
+            <li><b>Reader down?</b> Key it in. Still collect. A keyed payment beats an invoice every time.</li>
+            <li><b>Customer not on site?</b> Phone payment or virtual terminal. That's what it's for.</li>
+          </ol>
+          <div class="rule">Collecting the payment matters more than how the card got captured. Never let a job leave unpaid because the reader quit.</div>
+          <h5>Big jobs matter most</h5>
+          <ul>
+            <li>The goal is <b>under 10% of the money we collect</b> getting keyed.</li>
+            <li>One keyed <b>$10,000</b> move counts against the branch more than <b>twenty</b> keyed $400 jobs.</li>
+            <li>Heading to a large move? Confirm the reader is solid before you roll.</li>
+          </ul>
+          <h5>Before you roll out &mdash; 3 checks</h5>
+          <ul class="checks">
+            <li>&#9744; Reader charged, connected, logged in</li>
+            <li>&#9744; Final walkthrough done</li>
+            <li>&#9744; Payment captured, contract closed</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="sheet">
+        <div class="sh"><div class="t">&#128179; Payment capture &mdash; what you own</div><div class="w">Branch, ops and field managers</div></div>
+        <div class="sb">
+          <h5>Every morning</h5>
+          <ul>
+            <li>Readers checked, charged, connected, logged in. Know which one is your spare.</li>
+            <li><i>This is the single control that keeps our key-in rate down. Every dead reader at 4pm is a keyed transaction.</i></li>
+          </ul>
+          <h5>Every day</h5>
+          <ul>
+            <li>Walk the three accepted methods at huddle until every lead can name them cold: <b>tap, chip, swipe.</b></li>
+            <li>Review open unpaid contracts <b>daily</b>, not weekly.</li>
+            <li>Any job that left unpaid &rarr; <b>pulse on the branch board that same day</b>, with customer, amount and reason.</li>
+          </ul>
+          <h5>Every week</h5>
+          <ul>
+            <li>The Tuesday credit card review pulse is the formal reconciliation point. Make it mean something.</li>
+            <li>Every missing-payment pulse carries <b>a named owner and a date.</b> No exceptions &mdash; that's why they go stale.</li>
+          </ul>
+          <h5>When a customer pushes back on the total</h5>
+          <ul>
+            <li>Don't let it land at close-out. Address pricing concerns <b>during</b> the move, not at the end.</li>
+            <li>If it gets there anyway: <b>you get on the phone</b>, not the lead.</li>
+            <li>Position: we understand the frustration, we're within the maximum of the signed contract, and services were rendered. Claims and management follow up tomorrow &mdash; that conversation happens <i>after</i> payment, not instead of it.</li>
+          </ul>
+          <div class="pend">&#9888; The script and coaching behind this bullet are what ballot items 3 and 4 are for. Until those land, this is the most a manager has to work with.</div>
+          <h5>The bar</h5>
+          <table>
+            <thead><tr><th>Metric</th><th>Target</th></tr></thead>
+            <tbody>
+              <tr><td>Payment collected onsite</td><td>Every job</td></tr>
+              <tr><td>Keyed share of dollars collected</td><td><b>Under 10%</b></td></tr>
+              <tr><td>Invoiced after the fact</td><td>Rare, and pulsed same day</td></tr>
+            </tbody>
+          </table>
+          <p class="note">The tracker measures dollars, not transaction count &mdash; so protect the reader on your biggest jobs first. Your branch sits in Paul's weekly Manual Card Entry post in #branchmanagement-team.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <h4>What these deliberately don't do</h4>
+      <p>They don't quote a per-transaction cost, because we don't have Paul's figure yet. They don't tell a manager what to say when a customer flatly refuses, because that language doesn't exist yet. <b>The manager card is honest about that gap rather than papering over it</b> &mdash; which is the argument for shipping now and adding the script when it's real, instead of holding everything until it's all done.</p>
+      <p>Full text, plus the manager brief and the crew announcement that follow these, live in <b>tools/payment-capture-messaging.md</b>.</p>
+    </div>
+  </div>
+</section>
+
+<section id="s5">
+  <div class="wrap">
+    <div class="sec-label">5 &middot; The ballot</div>
+    <h2>What I'm proposing &mdash; and the argument against each</h2>
+    <p class="lead">Seven items. Pick who you are in the bar at the top, then mark each one. Every proposal carries the strongest case against it that I could make, so nobody has to build the counter-argument from scratch.</p>
+    <p><b>Discuss / Suggest is the useful button.</b> Use it when you'd do this differently, when the wording is wrong, when there's an approach I haven't considered, or when you'd agree but only with a change. Write the change in the note &mdash; a better idea is worth more here than a vote, and everyone can read it.</p>
+
+      <div class="prop" id="p1">
+        <div class="head"><span class="num">1</span><h4>Ship the two quick cards this week &mdash; mover card and manager expectations card, with the target stated as <b>under 10% of dollars collected</b>.</h4><span class="await">Awaiting</span></div>
+        <div class="body">
+          <p>Both are shown in full in <a href="#s4">section 4</a>. They make no cost claim and cite no contract language, so nothing open blocks them. Every week we wait is another week of crews guessing.</p>
+          <div class="against"><span class="tag">Argument against</span><p>The per-transaction cost figure isn't in yet. Sending guidance now and a fuller manager brief later can read as churn to the field.</p></div>
+          <div class="ballot" data-prop="1">
+            <div class="btns">
+              <button class="vote-btn agree" data-v="agree">Agree</button>
+              <button class="vote-btn disagree" data-v="disagree">Disagree</button>
+              <button class="vote-btn discuss" data-v="discuss">Discuss / Suggest</button>
+              <span class="saved"></span>
+            </div>
+            <textarea placeholder="Suggest an edit, a different approach, or what you'd need before you could agree"></textarea>
+          </div>
+          <div class="reactions" data-react="1" style="display:none"></div>
+        </div>
+      </div>
+      <div class="prop" id="p2">
+        <div class="head"><span class="num">2</span><h4><b>Is manual card entry a line item on the branch P&amp;L?</b> Does the extra processing cost land on branch margin &mdash; and should it factor into branch bonus payout?</h4><span class="await">Awaiting</span></div>
+        <div class="body">
+          <p>Keep the weekly tracking; that part works and we want to keep seeing it. The open question is whether the money is visible where it lands. Right now the cost of keying is absorbed somewhere above the branch, so a manager looking at 51.9% sees a color, not a number that touches their P&amp;L or their team's bonus. <b>My view is it should.</b> The fastest way to make this real is for a branch to feel the cost the same week they cause it.</p>
+          <div class="against"><span class="tag">Argument against</span><p>It charges branches for things partly outside their control &mdash; equipment failures, customers who aren't on site, third-party payers. And we can't model the impact at all until Paul's per-transaction figure exists, so voting yes here is voting for a number nobody has seen yet.</p></div>
+          <div class="ballot" data-prop="2">
+            <div class="btns">
+              <button class="vote-btn agree" data-v="agree">Agree</button>
+              <button class="vote-btn disagree" data-v="disagree">Disagree</button>
+              <button class="vote-btn discuss" data-v="discuss">Discuss / Suggest</button>
+              <span class="saved"></span>
+            </div>
+            <textarea placeholder="Suggest an edit, a different approach, or what you'd need before you could agree"></textarea>
+          </div>
+          <div class="reactions" data-react="2" style="display:none"></div>
+        </div>
+      </div>
+      <div class="prop" id="p3">
+        <div class="head"><span class="num">3</span><h4><b>What contract language can we agree to use to hold leverage on payment</b> when a move runs long or goes over the estimate? Should we be looking into this at all?</h4><span class="await">Awaiting</span></div>
+        <div class="body">
+          <p>This is a question for all of us, not an assignment. A move that runs past the estimate is the most common trigger for a customer refusing to close out, and right now every manager handles it with whatever words they come up with on the spot. If there is language in our contract that gives us a defensible position, we should know what it is, agree how it gets used, and train it. If there isn't, that's worth knowing too.</p>
+          <div class="against"><span class="tag">Argument against</span><p>Reaching for contract language at close-out can escalate a bad moment into a worse one &mdash; it reads adversarial, at the end of an already stressful day, to a customer who is about to review us. The better fix may be expectation-setting mid-move rather than a clause at the end.</p></div>
+          <div class="ballot" data-prop="3">
+            <div class="btns">
+              <button class="vote-btn agree" data-v="agree">Agree</button>
+              <button class="vote-btn disagree" data-v="disagree">Disagree</button>
+              <button class="vote-btn discuss" data-v="discuss">Discuss / Suggest</button>
+              <span class="saved"></span>
+            </div>
+            <textarea placeholder="Suggest an edit, a different approach, or what you'd need before you could agree"></textarea>
+          </div>
+          <div class="reactions" data-react="3" style="display:none"></div>
+        </div>
+      </div>
+      <div class="prop" id="p4">
+        <div class="head"><span class="num">4</span><h4><b>Build the price-dispute rules and best practices</b> &mdash; what a manager actually does when a customer refuses to pay the total.</h4><span class="await">Awaiting</span></div>
+        <div class="body">
+          <p>Not assigning this yet. The question is what rules we think should govern it: at what point the manager steps in rather than the lead, what gets said and in what order, where the line is between holding firm and de-escalating, when it hands off to claims, and what a manager is authorized to concede on the spot. Today that's improvised on a driveway by whoever is standing there.</p>
+          <div class="against"><span class="tag">Argument against</span><p>Over-scripting a human moment can make it worse. Every dispute has a different cause &mdash; damage, timing, a bad estimate, a genuine service failure &mdash; and a rigid script applied to the wrong one reads as a company reciting policy at someone who is upset.</p></div>
+          <div class="ballot" data-prop="4">
+            <div class="btns">
+              <button class="vote-btn agree" data-v="agree">Agree</button>
+              <button class="vote-btn disagree" data-v="disagree">Disagree</button>
+              <button class="vote-btn discuss" data-v="discuss">Discuss / Suggest</button>
+              <span class="saved"></span>
+            </div>
+            <textarea placeholder="Suggest an edit, a different approach, or what you'd need before you could agree"></textarea>
+          </div>
+          <div class="reactions" data-react="4" style="display:none"></div>
+        </div>
+      </div>
+      <div class="prop" id="p5">
+        <div class="head"><span class="num">5</span><h4><b>Do we push the fee to the customer when the customer is the reason we can't capture onsite?</b> Not when our reader fails &mdash; when they aren't there to pay.</h4><span class="await">Awaiting</span></div>
+        <div class="body">
+          <p>This is the one case where the extra cost is caused by the customer's own arrangement rather than our equipment or our crew: they won't be on site at the end, or someone else is paying and we have to call them or send a terminal. Those are card-not-present by their choice, not our failure. The question is whether that difference should show up on the invoice.</p>
+          <div class="against"><span class="tag">Argument against</span><p>Customers often can't help it &mdash; work, a closing, an out-of-state family member paying. Charging for that turns a clean move into a billing argument and a review risk. And it can only be fair if it's disclosed at booking, in the terms they sign, never sprung at close-out.</p></div>
+          <div class="ballot" data-prop="5">
+            <div class="btns">
+              <button class="vote-btn agree" data-v="agree">Agree</button>
+              <button class="vote-btn disagree" data-v="disagree">Disagree</button>
+              <button class="vote-btn discuss" data-v="discuss">Discuss / Suggest</button>
+              <span class="saved"></span>
+            </div>
+            <textarea placeholder="Suggest an edit, a different approach, or what you'd need before you could agree"></textarea>
+          </div>
+          <div class="reactions" data-react="5" style="display:none"></div>
+        </div>
+      </div>
+      <div class="prop" id="p6">
+        <div class="head"><span class="num">6</span><h4><b>Payment capture becomes a scored branch metric</b> &mdash; a QG with a target, not a coached practice.</h4><span class="await">Awaiting</span></div>
+        <div class="body">
+          <p>Seven weeks of unscored visibility took us from 37% to 27.2% and then stalled. Nothing here sits on anyone's scorecard.</p>
+          <div class="against"><span class="tag">Argument against</span><p>Scoring a dollar-weighted, high-variance number grades luck as much as behavior. Fix the metric first or we'll argue about the measurement instead of the money.</p></div>
+          <div class="ballot" data-prop="6">
+            <div class="btns">
+              <button class="vote-btn agree" data-v="agree">Agree</button>
+              <button class="vote-btn disagree" data-v="disagree">Disagree</button>
+              <button class="vote-btn discuss" data-v="discuss">Discuss / Suggest</button>
+              <span class="saved"></span>
+            </div>
+            <textarea placeholder="Suggest an edit, a different approach, or what you'd need before you could agree"></textarea>
+          </div>
+          <div class="reactions" data-react="6" style="display:none"></div>
+        </div>
+      </div>
+      <div class="prop" id="p7">
+        <div class="head"><span class="num">7</span><h4><b>Add a reason code to every keyed transaction</b> &mdash; no working reader &middot; crew didn't use it &middot; customer not on site &middot; customer refused.</h4><span class="await">Awaiting</span></div>
+        <div class="body">
+          <p>This is the fix that would have caught North Austin in week one instead of week five. Right now the tracker tells us a branch keyed $98,000 and nothing about why &mdash; so equipment failure, crew habit, and customer refusal all look identical and get the same useless response: try harder. Four causes, four completely different fixes, one undifferentiated number. It would also settle item 5 with evidence instead of opinion.</p>
+          <div class="against"><span class="tag">Argument against</span><p>It adds a field to every close-out, and self-reported reason codes are notoriously unreliable &mdash; "reader was down" is the answer nobody can argue with. We'd be trading a clean number for a dirty one and might just be measuring what crews are willing to admit.</p></div>
+          <div class="ballot" data-prop="7">
+            <div class="btns">
+              <button class="vote-btn agree" data-v="agree">Agree</button>
+              <button class="vote-btn disagree" data-v="disagree">Disagree</button>
+              <button class="vote-btn discuss" data-v="discuss">Discuss / Suggest</button>
+              <span class="saved"></span>
+            </div>
+            <textarea placeholder="Suggest an edit, a different approach, or what you'd need before you could agree"></textarea>
+          </div>
+          <div class="reactions" data-react="7" style="display:none"></div>
+        </div>
+      </div>
+
+    <p class="smallnote" style="color:var(--navy-400);font-size:.78rem;margin-top:18px">Marks save as you make them and everyone can see them. One more section below &mdash; the open floor.</p>
+
+  </div>
+</section>
+
+<section id="s6">
+  <div class="wrap">
+    <div class="sec-label">6 &middot; The open floor</div>
+    <h2>What have we missed?</h2>
+    <p class="lead">The ballot is only as good as what I thought to put on it. This section is for everything I didn't &mdash; a step in the process, a risk, a whole angle aimed at a better problem than the one I framed.</p>
+    <p>Nothing here is a vote. Write as much or as little as you want, in any box. It saves as you type and everyone can see it &mdash; so build on each other rather than repeating each other.</p>
+    <div class="floor">
+      <div class="fitem" data-add="recover">
+        <h4>Recovering payments after the fact</h4>
+        <div class="seed">Amanda already has ideas here &mdash; this is your section</div><p class="pr">When a job does leave unpaid, what should actually happen next? Who owns it, how fast, what the sequence of contact looks like, and when it stops being ours and becomes collections.</p>
+        <textarea placeholder="Your thinking here"></textarea>
+        <div class="st"></div>
+        <div class="fadd" data-fadd="recover" style="display:none"></div>
+      </div>
+      <div class="fitem" data-add="damage">
+        <h4>Damage claims and payment</h4>
+        <p class="pr">How the two should interact. Our current position is that an open claim doesn't pause the obligation to close out, and that claims follows up the next day. Is that right, and is it defensible?</p>
+        <textarea placeholder="Your thinking here"></textarea>
+        <div class="st"></div>
+        <div class="fadd" data-fadd="damage" style="display:none"></div>
+      </div>
+      <div class="fitem" data-add="upstream">
+        <h4>Before the job &mdash; booking and the estimate</h4>
+        <p class="pr">Most disputes at close-out started as an expectation set at booking. What could sales, the estimate, or the confirmation call do differently so the argument never reaches the driveway?</p>
+        <textarea placeholder="Your thinking here"></textarea>
+        <div class="st"></div>
+        <div class="fadd" data-fadd="upstream" style="display:none"></div>
+      </div>
+      <div class="fitem" data-add="equipment">
+        <h4>Equipment and hardware</h4>
+        <p class="pr">Readers, spares, charging, logins, who owns replacement and how fast. North Austin showed what a hardware gap costs before anyone notices it's a hardware gap.</p>
+        <textarea placeholder="Your thinking here"></textarea>
+        <div class="st"></div>
+        <div class="fadd" data-fadd="equipment" style="display:none"></div>
+      </div>
+      <div class="fitem" data-add="training">
+        <h4>Training and where this lives</h4>
+        <p class="pr">Trial Day, manager certification, huddles, onboarding. Where does payment capture actually belong so it holds instead of fading after two weeks?</p>
+        <textarea placeholder="Your thinking here"></textarea>
+        <div class="st"></div>
+        <div class="fadd" data-fadd="training" style="display:none"></div>
+      </div>
+      <div class="fitem wide" data-add="other">
+        <h4>Anything else</h4>
+        <p class="pr">The thing I haven't thought of. If something in this brief is aimed at the wrong problem entirely, this is the place to say so.</p>
+        <textarea placeholder="Your thinking here"></textarea>
+        <div class="st"></div>
+        <div class="fadd" data-fadd="other" style="display:none"></div>
+      </div>
+    </div>
+    <div class="respond">
+      <h4>Everything here is live and shared</h4>
+      <p>Pick your name in the bar at the top, then mark and write. It saves as you go, everyone sees everyone, and nothing needs to be sent back to me. Change your mind later and just change your mark.</p>
+      <div class="who-in" id="whoIn"></div>
+      <div class="livenote" id="liveNote">Connecting&hellip;</div>
+    </div>
+    <div class="dbwarn" id="dbWarn">Live tracking isn't available in this view, so nothing you type here will save or reach anyone. Don't fill it in from this window &mdash; open the page from the link in the Roundtable pulse instead.</div>
+    <div class="export-bar" id="exportWrap" style="display:none">
+      <h4>Send your response back</h4>
+      <p>Your marks are saved in this browser as you go. When you're done, build your response below, copy it, and paste it as an update on the Roundtable pulse so everyone can see it in one place.</p>
+      <p><a href="https://einsteinmoving.monday.com/boards/1146915251/pulses/12948702166" target="_blank" rel="noopener"><b>Open the pulse to paste it &rarr;</b></a></p>
+      <button class="export-btn" id="exportBtn">Build my response</button>
+      <textarea class="export-out" id="exportOut" readonly></textarea>
+    </div>
+      <div class="card">
+        <h4>Phase 1 &mdash; Harvest what works <span class="chip partial">Fastest wins</span></h4>
+        <p>Paul's cost figure. Tap-to-pay hardware confirm. Whether the DFWT swings are real method or big-job noise. <b>And an equipment audit at every branch before we coach anybody</b> &mdash; North Austin proved that comes first. Leander's and Houston's methods are being gathered separately.</p>
+      </div>
+      <div class="card">
+        <h4>Phase 2 &mdash; The contract question <span class="chip breaks">Long pole</span></h4>
+        <p>What language we can agree to use, how far it pushes, and whether an open damage claim changes the obligation to close out. <b>Open question for the group. Gates Phase 3.</b></p>
+      </div>
+      <div class="card">
+        <h4>Phase 3 &mdash; Rules and coaching <span class="chip partial">Blocked by 2</span></h4>
+        <p>The price-dispute rules and best practices, then wherever they belong in training. <b>Owner not set yet.</b></p>
+      </div>
+      <div class="card">
+        <h4>Phase 4 &mdash; Decide as a team <span class="chip partial">This ballot</span></h4>
+        <p>Whether keying hits branch P&amp;L and bonus, what contract language we agree to use, the customer-caused fee, and whether this gets scored. <b>Cameron + Paul + both RMs.</b></p>
+      </div>
+      <div class="card">
+        <h4>Phase 5 &mdash; Lock and push down <span class="chip partial">Last</span></h4>
+        <p>Manager brief, crew announcement, into certification, both regions the same week. <b>One push, not five.</b></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="s8">
+  <div class="wrap">
+    <div class="sec-label">8 &middot; Who owns what</div>
+    <h2>What each of us brings</h2>
+    <div class="who-grid"><div class="who"><div class="nm">Paul</div><div class="pc">Owns the tracker and the numbers &mdash; cost per transaction, whether keying can land on branch P&amp;L, what the processor terms allow.</div><span class="blocking yes">Has the numbers</span></div><div class="who"><div class="nm">Amanda</div><div class="pc">Knows what the contract actually carries, how claims interacts with payment, and what a dispute looks like from the CX side.</div><span class="blocking yes">Knows the contract</span></div><div class="who"><div class="nm">Mike</div><div class="pc">The second region &mdash; whether the DFWT swings are real, and whether any of this survives outside CTXH.</div><span class="blocking yes">Second region</span></div><div class="who"><div class="nm">Matisen</div><div class="pc">What the Clover and EMMA data can actually produce &mdash; tap-to-pay in the field, reason codes, transaction counts.</div><span class="blocking yes">What the data can do</span></div><div class="who"><div class="nm">Anne</div><div class="pc">Where this lands in training so it holds &mdash; Trial Day and manager certification.</div><span class="blocking soft">Makes it stick</span></div><div class="who"><div class="nm">Cameron</div><div class="pc">The calls that set the incentive &mdash; P&amp;L, bonus, the customer-caused fee, and whether this gets scored.</div><span class="blocking soft">Sets the incentive</span></div><div class="who"><div class="nm">Brian</div><div class="pc">The messaging, the cards, the equipment audit, and the rollout &mdash; plus 69.8% of the problem to fix.</div><span class="blocking go">Cards shipping now</span></div></div>
+
+    <h3>Already settled &mdash; not on the ballot</h3>
+    <div class="callout">
+      <p><b>Card-present:</b> swipe, chip, and tap on our reader. <b>Counts as keyed:</b> virtual terminal, manual entry, and payment links, including when the customer types it in themselves. <i>(Paul, Sep 1)</i></p>
+      <p><b>Under 10% company-wide is the goal</b>, measured as a share of dollars collected. <i>(Paul, Jul 20)</i></p>
+      <p><b>Collecting onsite outranks capture method.</b> Reader down means key it in and close out &mdash; a keyed payment beats an invoice. <b>Invoicing later is the failure state</b>, not the fallback.</p>
+    </div>
+  </div>
+</section>
+
+<div class="foot">
+  <div class="wrap">
+    <p><b>Sources.</b> Manual Card Entry &mdash; Branch Tracker (Slack canvas) &middot; Paul's weekly posts in #branchmanagement-team on Jul 20, Jul 28, Aug 17 and Aug 31 &middot; Paul's capture ruling on Sky Board pulse 12948702166 &middot; branch board reads from Sep 1.</p>
+    <p class="smallnote">Keyed-dollar shares are exact, summed from the published branch figures. Regional rates are derived and approximate. Working doc: tools/payment-capture-messaging.md in cos-vera &mdash; holds this brief, the manager brief, the crew announcement, both quick cards, and the full best-practice list.</p>
+  </div>
+</div>
+
+<script>
+(function(){
+  var NAMES=['Cameron','Paul','Mike','Amanda','Anne','Matisen','Brian'];
+  var FLOOR={recover:'Recovering payments after the fact',damage:'Damage claims and payment',upstream:'Before the job — booking and the estimate',equipment:'Equipment and hardware',training:'Training and where this lives',other:'Anything else'};
+  var VLABEL={agree:'Agree',disagree:'Disagree',discuss:'Suggest'};
+  var VCLASS={agree:'a',disagree:'d',discuss:'q'};
+  var me=null, db=null, all={}, timer=null, dirty=false, mode='live';
+
+  try{ me=localStorage.getItem('closeout-me'); }catch(e){}
+  if(NAMES.indexOf(me)<0) me=null;
+
+  var chips=document.querySelectorAll('.rev-chip');
+  var note=document.getElementById('liveNote');
+  var warn=document.getElementById('dbWarn');
+  var whoIn=document.getElementById('whoIn');
+
+  function esc(t){ var d=document.createElement('div'); d.textContent=t==null?'':String(t); return d.innerHTML; }
+  function setNote(t){ if(note) note.textContent=t; }
+  function rec(n){ var r=all[String(n).toLowerCase()]; return r||null; }
+  function myRec(){
+    if(!me) return {votes:{},notes:{},add:{}};
+    var id=me.toLowerCase();
+    if(!all[id]) all[id]={name:me,votes:{},notes:{},add:{}};
+    var r=all[id];
+    if(!r.votes) r.votes={};
+    if(!r.notes) r.notes={};
+    if(!r.add) r.add={};
+    return r;
+  }
+  function hasAnything(r){
+    if(!r) return false;
+    var v=r.votes||{}, n=r.notes||{}, a=r.add||{};
+    if(Object.keys(v).length) return true;
+    var k;
+    for(k in n){ if((n[k]||'').trim()) return true; }
+    for(k in a){ if((a[k]||'').trim()) return true; }
+    return false;
+  }
+
+  function schedule(){ dirty=true; if(timer) clearTimeout(timer); timer=setTimeout(persist,700); }
+  var persist=function(){
+    if(!db||!me){ return; }
+    var r=myRec();
+    db.doc('ballot/'+me.toLowerCase()).set({
+      name:me, votes:r.votes, notes:r.notes, add:r.add, updated:new Date().toISOString()
+    }).then(function(){ dirty=false; setNote('Saved — everyone can see it.'); })
+      .catch(function(e){ setNote('Could not save (' + ((e&&e.code)||'error') + '). Your last change may not have reached anyone.'); });
+  };
+
+  function render(){
+    var focused=document.activeElement;
+    // ballot rows
+    document.querySelectorAll('.ballot').forEach(function(b){
+      var p=b.getAttribute('data-prop'), r=myRec();
+      b.querySelectorAll('.vote-btn').forEach(function(btn){
+        btn.classList.toggle('on', !!me && r.votes[p]===btn.getAttribute('data-v'));
+        btn.disabled=!me;
+      });
+      var ta=b.querySelector('textarea');
+      if(ta!==focused){ ta.value=(me&&r.notes[p])||''; }
+      ta.disabled=!me;
+      b.querySelector('.saved').textContent = me ? '' : 'pick your name above';
+    });
+    // everyone's reactions per proposal
+    document.querySelectorAll('.reactions').forEach(function(box){
+      var p=box.getAttribute('data-react'), rows=[], tally={agree:0,disagree:0,discuss:0};
+      NAMES.forEach(function(n){
+        var r=rec(n); if(!r) return;
+        var v=(r.votes||{})[p], t=((r.notes||{})[p]||'').trim();
+        if(!v && !t) return;
+        if(v) tally[v]=(tally[v]||0)+1;
+        rows.push('<div class="react"><div class="who">'+esc(n)+'</div>'+
+          '<div class="vote '+(VCLASS[v]||'')+'">'+(v?esc(VLABEL[v]):'&mdash;')+'</div>'+
+          '<div class="said">'+(t?esc(t):'')+'</div></div>');
+      });
+      if(!rows.length){ box.style.display='none'; box.innerHTML=''; return; }
+      var head='<div class="rlabel">Where everyone landed &mdash; '+tally.agree+' agree &middot; '+tally.disagree+' disagree &middot; '+tally.discuss+' suggest</div>';
+      box.innerHTML=head+rows.join('');
+      box.style.display='block';
+    });
+    // open floor
+    document.querySelectorAll('.fitem').forEach(function(f){
+      var k=f.getAttribute('data-add'), r=myRec(), ta=f.querySelector('textarea');
+      if(ta!==focused){ ta.value=(me&&r.add[k])||''; }
+      ta.disabled=!me;
+      f.querySelector('.st').textContent = me ? '' : 'pick your name above';
+      var box=f.querySelector('.fadd'), rows=[];
+      NAMES.forEach(function(n){
+        if(me && n===me) return;
+        var rr=rec(n); if(!rr) return;
+        var t=((rr.add||{})[k]||'').trim(); if(!t) return;
+        rows.push('<div class="fe"><b>'+esc(n)+'</b> &mdash; '+esc(t)+'</div>');
+      });
+      if(!rows.length){ box.style.display='none'; box.innerHTML=''; return; }
+      box.innerHTML='<div class="fh">From the team</div>'+rows.join('');
+      box.style.display='block';
+    });
+    // who has weighed in
+    if(whoIn){
+      whoIn.innerHTML=NAMES.map(function(n){
+        return '<span class="rp'+(hasAnything(rec(n))?' in':'')+'">'+esc(n)+'</span>';
+      }).join('');
+    }
+  }
+
+  chips.forEach(function(c){
+    c.addEventListener('click',function(){
+      me=c.getAttribute('data-r');
+      try{ localStorage.setItem('closeout-me',me); }catch(e){}
+      chips.forEach(function(x){ x.classList.toggle('on', x.getAttribute('data-r')===me); });
+      render();
+      setNote(mode==='static'?'Ready — your marks save in this browser.':'Live — your marks save as you make them.');
+    });
+  });
+  chips.forEach(function(x){ x.classList.toggle('on', x.getAttribute('data-r')===me); });
+
+  document.querySelectorAll('.ballot').forEach(function(b){
+    var p=b.getAttribute('data-prop');
+    b.querySelectorAll('.vote-btn').forEach(function(btn){
+      btn.addEventListener('click',function(){
+        if(!me) return;
+        var r=myRec(), v=btn.getAttribute('data-v');
+        if(r.votes[p]===v){ delete r.votes[p]; } else { r.votes[p]=v; }
+        render(); schedule();
+        if(r.votes[p]==='discuss'){ b.querySelector('textarea').focus(); }
+      });
+    });
+    b.querySelector('textarea').addEventListener('input',function(e){
+      if(!me) return;
+      myRec().notes[p]=e.target.value; schedule();
+      b.querySelector('.saved').textContent='saving…';
+    });
+    b.querySelector('textarea').addEventListener('blur',render);
+  });
+
+  document.querySelectorAll('.fitem').forEach(function(f){
+    var k=f.getAttribute('data-add'), ta=f.querySelector('textarea');
+    ta.addEventListener('input',function(e){
+      if(!me) return;
+      myRec().add[k]=e.target.value; schedule();
+      f.querySelector('.st').textContent='saving…';
+    });
+    ta.addEventListener('blur',render);
+  });
+
+  window.addEventListener('beforeunload',function(){ if(dirty) persist(); });
+
+  // ---- local persistence, used when there is no shared store (static hosting) ----
+  var LKEY='closeout-local-v1';
+  function loadLocal(){
+    try{ var raw=localStorage.getItem(LKEY); if(raw) all=JSON.parse(raw)||{}; }catch(e){ all={}; }
+  }
+  function saveLocal(){
+    if(!me) return;
+    try{ localStorage.setItem(LKEY,JSON.stringify(all)); }catch(e){}
+    setNote('Saved in this browser. Build your response below when you are done.');
+  }
+
+  function goStatic(){
+    mode='static';
+    persist=saveLocal;
+    loadLocal();
+    var wi=document.getElementById('whoIn'); if(wi) wi.style.display='none';
+    var rp=document.querySelector('.respond p');
+    if(rp) rp.textContent='Pick your name in the bar at the top, then mark and write. Your marks save in this browser as you go. When you are done, build your response at the bottom of this section and paste it on the Roundtable pulse so everyone sees it.';
+    var rh=document.querySelector('.respond h4');
+    if(rh) rh.textContent='Mark it up, then post your response';
+    var ew=document.getElementById('exportWrap'); if(ew) ew.style.display='block';
+    setNote(me?'Ready — your marks save in this browser.':'Pick your name above to start.');
+    render();
+  }
+
+  render();
+  setNote('Connecting…');
+
+  if(window.claude && typeof window.claude.use==='function'){
+    window.claude.use('db').then(function(d){
+      if(!d){ if(warn) warn.classList.add('on'); setNote('Not connected — nothing typed here will save.'); return; }
+      db=d; mode='live';
+      db.collection('ballot').onSnapshot(function(snap){
+        var next={};
+        snap.docs.forEach(function(doc){
+          var data=doc.data()||{};
+          next[doc.id]={name:data.name||doc.id,votes:data.votes||{},notes:data.notes||{},add:data.add||{},updated:data.updated||''};
+        });
+        if(me && dirty && all[me.toLowerCase()]) next[me.toLowerCase()]=all[me.toLowerCase()];
+        all=next;
+        render();
+        if(!dirty) setNote(me?'Live — your marks save as you make them.':'Live — pick your name above to take part.');
+      },function(e){
+        setNote('Live updates stopped (' + ((e&&e.code)||'error') + '). Reload the page to reconnect.');
+      });
+    }).catch(function(){
+      if(warn) warn.classList.add('on');
+      setNote('Not connected — nothing typed here will save.');
+    });
+  } else {
+    goStatic();
+  }
+
+  var eb=document.getElementById('exportBtn');
+  if(eb){
+    eb.addEventListener('click',function(){
+      var out=document.getElementById('exportOut');
+      if(!me){ out.style.display='block'; out.value='Pick your name in the bar at the top first.'; return; }
+      var r=myRec(), lines=['THE CLOSE-OUT QUESTION — response from '+me,''];
+      var total=document.querySelectorAll('.prop').length;
+      var LBL={agree:'AGREE',disagree:'DISAGREE',discuss:'DISCUSS / SUGGEST'};
+      for(var i=1;i<=total;i++){
+        var k=String(i), h=document.querySelector('#p'+k+' h4');
+        lines.push(k+'. ['+(LBL[r.votes[k]]||'NO MARK')+'] '+(h?h.textContent.trim():''));
+        if((r.notes[k]||'').trim()) lines.push('   -> '+r.notes[k].trim());
+      }
+      var keys=Object.keys(FLOOR).filter(function(k){ return (r.add[k]||'').trim(); });
+      if(keys.length){
+        lines.push('','--- WHAT WE MISSED ---');
+        keys.forEach(function(k){ lines.push('','* '+FLOOR[k],'  '+r.add[k].trim()); });
+      }
+      out.style.display='block'; out.value=lines.join('\n');
+      out.select();
+    });
+  }
+})();
+
+</script>
+
+</body>
+</html>
